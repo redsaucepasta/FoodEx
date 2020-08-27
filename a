@@ -1,0 +1,105 @@
+<!-- <% menu.forEach(function(item){%>
+<p><%= item.outlet.name %></p>
+<p><%= item.item.name %></p>
+<% }); %> -->
+
+
+
+<!-- <%= outletName %>
+<form action="/outlet/<%= outlet._id %>" method="post">
+  <input type="text" name="itemname" value="">
+  <input type="text" name="itemprice" value="">
+  <button type="submit" name="button">Publish</button>
+</form> -->
+
+
+Outlet.find({}, function(err, outlets){
+  res.render("outletlist", {outletList: outlets});
+});
+
+
+const requestedOutletId = req.params.outletId;
+Menu.findOne({_id: requestedOutletId}, function(err, foundMenu) {
+  res.render("menu", {menu: foundMenu});
+});
+
+
+
+
+
+let body = req.body;
+for(let itemname in body){
+  itemq = body[itemname];
+  if(itemq>0){
+    res.write(itemname+" : "+itemq+"\n");
+  }
+}
+
+res.send();
+
+
+
+
+<div class="">
+  <form action="/home/<%= outletId %>" method="post">
+    <% (menu.item).forEach(function(item){%>
+    <p><%= item.name %> : <%= item.price %>
+      <select name="<%= item.name %>">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select></p>
+    <% }); %>
+    <p><input type="submit" value="Add to Cart"></p>
+  </form>
+
+</div>
+
+
+
+
+User.findOne({username: req.user.username}, function(err, foundUser) {
+  if (!err) {
+    Cart.findOneAndUpdate({_id: foundUser._id}, {$push: {item: details}}, function(err, succ) {
+      if(err){
+        console.log(err);
+      }
+      else {
+        console.log(succ);
+      }
+    });
+  }
+  else {
+    console.log(err);
+  }
+});
+
+
+items = foundCart.item;
+for(let i=0; i<items.length; i++){
+  if(items[i]._id == requestedItemId){
+    if(items[i].quantity === 1){
+      items.splice(i,1);
+    }
+    else{
+      let newq = items[i].quantity - 1;
+      items[i].quantity = newq;
+    }
+  }
+}
+Cart.findOneAndUpdate({_id: foundUser._id}, {item: items}, function(err, succ) {
+  if(err){
+    console.log(err);
+  }
+  else{
+    res.redirect("/home/cart");
+  }
+});
+}
+else {
+console.log(err);
+}
+});

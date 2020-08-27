@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+<h1>cart</h1>
+<br>
+<h3>Outlet: <%= outlet %></h3>
+<h4>total: <%= carttotal %></h4>
+<br>
+<% cart.forEach(function(item){ %>
+  <div class="jumbotron">
+      Item: <%= item.name %> , Price: <%= item.price %>, Quantity: <%= item.quantity %>
+      <a class="btn btn-outline-dark" href="/delete/<%= item._id %>" role="button">Remove</a>
+  </div>
+<% }); %>
+
+
+<%- include('partials/footer') %>

@@ -1,0 +1,10 @@
+<%- include("partials/header") -%>
+
+<h1>welcome <%= user %></h1>
+<br><br>
+<% outletList.forEach(function(outlet){ %>
+    <p><a class="btn btn-outline-info btn-lg" href="/menu/<%= outlet._id %>"><%= outlet.name %></a></p>
+<% }); %>
+
+
+<%- include("partials/footer") -%>
