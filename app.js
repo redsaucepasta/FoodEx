@@ -179,7 +179,7 @@ app.post("/menu/:outletId", function(req, res) {
           }
         });
         console.log("total : " + total);
-        res.redirect("/home/cart");
+        res.redirect("/menu/" + requestedOutletId);
       }
       else{
         console.log(err);

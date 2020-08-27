@@ -103,3 +103,6 @@ else {
 console.log(err);
 }
 });
+
+
+class="collapse navbar-collapse" id="navbarSupportedContent"
