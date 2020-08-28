@@ -106,3 +106,47 @@ console.log(err);
 
 
 class="collapse navbar-collapse" id="navbarSupportedContent"
+
+
+
+console.log("cart contains items from the same outlet");
+existingItems = foundCart.item;
+let elen = existingItems.length;
+let dlen = detailsArray.length;
+console.log(existingItems);
+console.log(detailsArray);
+console.log("________BEFORE LOOP_______");
+for(let a = 0; a<elen; a++){
+  for(let b = 0; b<dlen; b++){
+    if (existingItems[a].name === detailsArray[b].name){
+      existingItems[a].quantity = Number(existingItems[a].quantity) + Number(detailsArray[b].quantity);
+      newArrayOfDetails.push(existingItems[a]);
+    }
+    else {
+      newArrayOfDetails.push(detailsArray[b]);
+    }
+  }
+}
+console.log(newArrayOfDetails);
+
+
+
+Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+  (foundCart.item).forEach(function(item) {
+    if(item.name === details.name){
+      details.quantity = Number(item.quantity) + Number(details.quantity);
+      item.quantity = details.quantity;
+      details = {};
+      foundCart.save();
+    }
+    else {
+      if(Object.keys(details).length !== 0){
+        Cart.findOneAndUpdate({_id: foundUser._id}, {$push: {item: details}, outlet: outlet}, function(err, succ) {
+          if(err){
+            console.log(err);
+          }
+        });
+      }
+    }
+  });
+});

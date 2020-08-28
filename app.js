@@ -141,7 +141,10 @@ app.post("/menu/:outletId", function(req, res) {
     let total = 0;
     let details = {};
     let detailsArray = [];
+    let existingItems = [];
+    let newArrayOfDetails = [];
     let outlet = "some outlet";
+    let newQuantity = 0;
     console.log(body);
     Outlet.findOne({_id: requestedOutletId}, function(err, foundOutlet) {
       if(!err){
@@ -162,15 +165,54 @@ app.post("/menu/:outletId", function(req, res) {
             });
           }
         }
-        console.log("details array\n" + detailsArray);
+        // console.log("details array\n" + detailsArray);
         User.findOne({username: req.user.username}, function(err, foundUser) {
           if (!err) {
-            Cart.findOneAndUpdate({_id: foundUser._id}, {$push: {item: detailsArray}, outlet: outlet}, function(err, succ) {
-              if(err){
-                console.log(err);
-              }
-              else {
-                console.log(succ);
+            Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+              if(!err){
+                console.log(foundCart.outlet);
+                if(foundCart.outlet == ''){
+                  Cart.findOneAndUpdate({_id: foundUser._id}, {$push: {item: detailsArray}, outlet: outlet}, function(err, succ) {
+                    if(err){
+                      console.log(err);
+                    }
+                    else {
+                      res.redirect("/home/cart");
+                    }
+                  });
+                }
+                else if(foundCart.outlet == outlet){
+                  detailsArray = [];
+                  Menu.findOne({_id: requestedOutletId}, function(err, foundMenu) {
+                    for(let itemname in body){
+                      itemq = body[itemname];
+                      if(itemq>0){
+                        (foundMenu.item).forEach(function(item) {
+                          if (item.name===itemname){
+                            details = {"name": item.name, "price": item.price, "quantity": itemq};
+                            console.log(details);
+                            Cart.findOne({_id: foundUser._id}, function(err, foundCart){
+                              if(!err){
+                                (foundCart.item).forEach(function(item){
+                                  if(item.name === details.name){
+                                    details.quantity = Number(item.quantity) + Number(details.quantity);
+                                  }
+                                  detailsArray.push(details);
+                                });
+                              }
+                            });
+                          }
+                        });
+                      }
+                    }
+                    console.log(detailsArray);
+                  });
+                  res.redirect("/home/cart")
+                }
+                else {
+                  console.log("cart already has items form other outlets");
+                  res.render("cartError");
+                }
               }
             });
           }
@@ -178,8 +220,7 @@ app.post("/menu/:outletId", function(req, res) {
             console.log(err);
           }
         });
-        console.log("total : " + total);
-        res.redirect("/home/cart");
+        // console.log("total : " + total);
       }
       else{
         console.log(err);
@@ -207,25 +248,25 @@ app.get("/home/cart", function(req, res) {
           if(!err){
             items = foundCart.item;
             items.forEach(function(item) {
-              console.log(item.price+ "  " + item.quantity);
+              // console.log(item.price+ "  " + item.quantity);
               total = total + (item.price*item.quantity);
-              console.log(total);
+              // console.log(total);
             });
             outlet = foundCart.outlet;
-            console.log("\n"+total);
+            // console.log("\n"+total);
           }
           else {
             console.log(err);
           }
-          console.log(total);
+          // console.log(total);
           if(total===0){
             outlet=""
           }
           Cart.findOneAndUpdate({_id: foundUser._id}, {total: total, outlet:outlet}, function(err, foundCart) {
-            console.log("\n"+total);
+            // console.log("\n"+total);
         });
         Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
-          console.log(foundCart);
+          // console.log(foundCart);
           res.render("cart", {carttotal: foundCart.total, cart: foundCart.item, outlet: foundCart.outlet});
         });
         });
