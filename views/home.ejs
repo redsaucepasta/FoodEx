@@ -1,10 +1,24 @@
 <%- include("partials/header") -%>
 
-<h1>welcome <%= user %></h1>
+<div class="centered">
+  <h1>Welcome <%= user %></h1>
+</div>
 <br><br>
-<% outletList.forEach(function(outlet){ %>
-    <p><a class="btn btn-outline-info btn-lg" href="/menu/<%= outlet._id %>"><%= outlet.name %></a></p>
-<% }); %>
 
+
+
+<div class="row">
+  <% outletList.forEach(function(outlet){ %>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title card-centered"><%= outlet.name %></h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a class="btn btn-outline-primary btn-block" href="/menu/<%= outlet._id %>">Menu</a>
+      </div>
+    </div>
+  </div>
+  <% }); %>
+</div>
 
 <%- include("partials/footer") -%>

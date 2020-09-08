@@ -189,3 +189,11 @@ console.log("sorted dets");
 console.log(detailsArray.sort(compare));
 console.log("sorted existing");
 console.log(existingItems.sort(compare));
+
+<% outletList.forEach(function(outlet){ %>
+<a class="outletName centered" href="/menu/<%= outlet._id %>">
+  <!-- <div class="jumbotron"> -->
+    <%= outlet.name %>
+  <!-- </div> -->
+</a>
+<% }); %>

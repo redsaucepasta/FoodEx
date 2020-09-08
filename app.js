@@ -222,7 +222,8 @@ app.post("/menu/:outletId", function(req, res) {
         console.log(err);
       }
     });
-  } else {
+  }
+  else {
     res.redirect("/login");
   }
 });
