@@ -138,7 +138,6 @@ app.post("/menu/:outletId", function(req, res) {
   if (req.isAuthenticated()){
     const requestedOutletId = req.params.outletId;
     let body = req.body;
-    let total = 0;
     let details = {};
     let detailsArray = [];
     let existingItems = [];
@@ -158,9 +157,8 @@ app.post("/menu/:outletId", function(req, res) {
           if(itemq>0){
             (foundMenu.item).forEach(function(item) {
               if (item.name===itemname){
-                details = {"name": item.name, "price": item.price, "quantity": itemq};
+                details = {"name": item.name, "price": item.price, "quantity": Number(itemq)};
                 detailsArray.push(details);
-                total = total + (item.price*itemq);
               }
             });
           }
@@ -182,32 +180,31 @@ app.post("/menu/:outletId", function(req, res) {
                   });
                 }
                 else if(foundCart.outlet == outlet){
-                  detailsArray = [];
-                  Menu.findOne({_id: requestedOutletId}, function(err, foundMenu) {
-                    for(let itemname in body){
-                      itemq = body[itemname];
-                      if(itemq>0){
-                        (foundMenu.item).forEach(function(item) {
-                          if (item.name===itemname){
-                            details = {"name": item.name, "price": item.price, "quantity": itemq};
-                            console.log(details);
-                            Cart.findOne({_id: foundUser._id}, function(err, foundCart){
-                              if(!err){
-                                (foundCart.item).forEach(function(item){
-                                  if(item.name === details.name){
-                                    details.quantity = Number(item.quantity) + Number(details.quantity);
-                                  }
-                                  detailsArray.push(details);
-                                });
-                              }
-                            });
-                          }
-                        });
+                  Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+                    existingItems = foundCart.item;
+                    detailsArray.forEach(function(item) {
+                      existingItems.forEach(function(existingItem) {
+                        if(existingItem.name === item.name){
+                          item.quantity = Number(item.quantity) + Number(existingItem.quantity);
+                          existingItems.splice(existingItems.indexOf(existingItem), 1);
+                        }
+                      });
+                    });
+                    existingItems.forEach(function(existingItem){
+                      details = {"name": existingItem.name, "price": existingItem.price, "quantity": Number(existingItem.quantity)};
+                      detailsArray.push(details);
+                    });
+                    Cart.findOneAndUpdate({_id: foundUser._id}, {item: detailsArray, outlet: outlet}, function(err, succ) {
+                      if(err){
+                        console.log(err);
                       }
-                    }
-                    console.log(detailsArray);
+                      else {
+                        res.redirect("/home/cart");
+                      }
+                    });
                   });
-                  res.redirect("/home/cart")
+                  // res.send("items from same outlet exists");
+                  // res.redirect("/home/cart");
                 }
                 else {
                   console.log("cart already has items form other outlets");
@@ -220,7 +217,6 @@ app.post("/menu/:outletId", function(req, res) {
             console.log(err);
           }
         });
-        // console.log("total : " + total);
       }
       else{
         console.log(err);
