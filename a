@@ -190,6 +190,8 @@ console.log(detailsArray.sort(compare));
 console.log("sorted existing");
 console.log(existingItems.sort(compare));
 
+
+
 <% outletList.forEach(function(outlet){ %>
 <a class="outletName centered" href="/menu/<%= outlet._id %>">
   <!-- <div class="jumbotron"> -->
@@ -197,3 +199,14 @@ console.log(existingItems.sort(compare));
   <!-- </div> -->
 </a>
 <% }); %>
+
+
+// res.render("outlet/outlet-home", {outletName: req.user.username});
+// Outlet.findOne({username: req.user.username}, function(err, foundOutlet) {
+//   if(err){
+//     console.log(err);
+//   }
+//   else {
+//     res.render("outlet/outlet-home", {outletName: foundOutlet.name});
+//   }
+// });

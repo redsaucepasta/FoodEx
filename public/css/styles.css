@@ -1,7 +1,4 @@
 
-body {
-  /* background-color: #E8ECEF; */
-}
 .navbar{
   background-color: #e3f2fd;
 }
@@ -11,18 +8,11 @@ body {
     margin-top: 50px;
     text-align: center;
 }
+
 .card-centered {
     /* padding-top: 200px; */
     margin-top: 10px;
     text-align: center;
-}
-
-
-.secret-text {
-  text-align: center;
-  font-size: 2rem;
-  color: #fff;
-  background-color: #000;
 }
 
 .outletName{

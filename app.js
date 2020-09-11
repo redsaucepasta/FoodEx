@@ -59,12 +59,14 @@ const cartSchema = new Schema({
 });
 
 const outletSchema = new Schema({
-  _id: Schema.Types.ObjectId,
+  // _id: Schema.Types.ObjectId,
   name: String,
-  email: String,
+  username: String,
   password: String,
   menu: [{type: Schema.Types.ObjectId, ref: 'Menu'}]
 });
+outletSchema.plugin(passportLocalMongoose);
+outletSchema.plugin(findOrCreate);
 
 const menuSchema = new Schema({
   _id : {type: Schema.Types.ObjectId, ref: 'Outlet'},
@@ -87,12 +89,12 @@ const Cart = new mongoose.model("Cart", cartSchema);
 // <----------------------------------------------------------->
 
 
-passport.use(User.createStrategy());
+passport.use('local.one', User.createStrategy());
+passport.use('local.two', Outlet.createStrategy());
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
-
 passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
     done(err, user);
@@ -100,12 +102,22 @@ passport.deserializeUser(function(id, done) {
 });
 
 
+
+// passport.serializeUser(function(outlet, done) {
+//   done(null, outlet.id);
+// });
+// passport.deserializeUser(function(id, done) {
+//   Outlet.findById(id, function(err, outlet) {
+//     done(err, outlet);
+//   });
+// });
+
 // <----------------------------------------------------------->
 
 
 // lANDING PAGE
 app.get("/", function(req, res){
-  res.render("landing");
+  res.render("user/landing");
 });
 
 
@@ -114,7 +126,7 @@ app.get("/", function(req, res){
 app.get("/home", function(req, res){
   if (req.isAuthenticated()){
     Outlet.find({}, function(err, outlets){
-      res.render("home", {outletList: outlets, user: req.user.username});
+      res.render("user/home", {outletList: outlets, user: req.user.username});
     });
   } else {
     res.redirect("/login");
@@ -126,8 +138,12 @@ app.get("/home", function(req, res){
 app.get("/menu/:outletId", function(req, res) {
   if (req.isAuthenticated()){
     const requestedOutletId = req.params.outletId;
+    let outletName = "";
+    Outlet.findOne({_id: requestedOutletId}, function(err, foundOutlet){
+      outletName = foundOutlet.name;
+    });
     Menu.findOne({_id: requestedOutletId}, function(err, foundMenu) {
-      res.render("menu", {menu: foundMenu, outletId: requestedOutletId});
+      res.render("user/menu", {menu: foundMenu, outletId: requestedOutletId, outletName: outletName});
     });
   } else {
     res.redirect("/login");
@@ -170,6 +186,7 @@ app.post("/menu/:outletId", function(req, res) {
               if(!err){
                 console.log(foundCart.outlet);
                 if(foundCart.outlet == ''){
+                  detailsArray.sort(compare);
                   Cart.findOneAndUpdate({_id: foundUser._id}, {$push: {item: detailsArray}, outlet: outlet}, function(err, succ) {
                     if(err){
                       console.log(err);
@@ -194,6 +211,7 @@ app.post("/menu/:outletId", function(req, res) {
                       details = {"name": existingItem.name, "price": existingItem.price, "quantity": Number(existingItem.quantity)};
                       detailsArray.push(details);
                     });
+                    detailsArray.sort(compare);
                     Cart.findOneAndUpdate({_id: foundUser._id}, {item: detailsArray, outlet: outlet}, function(err, succ) {
                       if(err){
                         console.log(err);
@@ -208,7 +226,7 @@ app.post("/menu/:outletId", function(req, res) {
                 }
                 else {
                   console.log("cart already has items form other outlets");
-                  res.render("cartError");
+                  res.render("user/cartError");
                 }
               }
             });
@@ -264,7 +282,7 @@ app.get("/home/cart", function(req, res) {
         });
         Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
           // console.log(foundCart);
-          res.render("cart", {carttotal: foundCart.total, cart: foundCart.item, outlet: foundCart.outlet});
+          res.render("user/cart", {carttotal: foundCart.total, cart: foundCart.item, outlet: foundCart.outlet});
         });
         });
       }
@@ -322,7 +340,7 @@ app.get("/delete/:itemId", function(req, res) {
 
 // USER LOGIN
 app.get("/login", function(req, res) {
-  res.render("login");
+  res.render("user/login");
 });
 
 app.post("/login", function(req, res) {
@@ -335,7 +353,7 @@ app.post("/login", function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      passport.authenticate("local")(req, res, function(){
+      passport.authenticate("local.one")(req, res, function(){
         res.redirect("/home");
       });
     }
@@ -364,7 +382,7 @@ app.get("/logout", function(req, res){
 
 // USER SIGN UP
 app.get("/signup", function(req, res) {
-  res.render("register");
+  res.render("user/register");
 });
 
 app.post("/signup", function(req, res) {
@@ -374,7 +392,7 @@ app.post("/signup", function(req, res) {
       res.redirect("/signup")
     }
     else{
-      passport.authenticate("local")(req, res, function(){
+      passport.authenticate("local.one")(req, res, function(){
         User.findOne({username: req.body.username}, function(err, foundUser) {
           if (err) {
             console.log(err);
@@ -401,50 +419,95 @@ app.post("/signup", function(req, res) {
 
 // <----------------------------------------------------------->
 
+// OUTLET HOME PAGE
+app.get("/outlethome", function(req, res) {
+  if(req.isAuthenticated()){
+    console.log(req);
+    res.send("logged in");
+  }
+  else{
+    res.send("not authenticated");
+  }
+});
+
 
 
 
 // OUTLET LOGIN
 app.get("/outletlogin", function(req, res) {
-  res.send("outlet login (GET)\n not yet programmed.");
+  res.render("outlet/outlet-login");
 });
 
-app.post("outletlogin", function(res, req) {
-  res.send("outlet login (POST)\n not yet programmed.");
+app.post("/outletlogin", function(req, res) {
+  const outlet = new Outlet({
+    username: req.body.username,
+    password: req.body.password
+  });
+
+  req.login(outlet, function(err){
+    if (err) {
+      console.log(err);
+    } else {
+      passport.authenticate("local.two")(req, res, function(){
+        res.redirect("/outlethome");
+      });
+    }
+  });
 });
+
+
+
+app.get("/outletlogout", function(req, res){
+  res.send("outlet logout");
+});
+
 
 
 // OUTLET SIGN UP
 app.get("/outletsignup", function(req, res) {
-  res.render("outlet-register");
+  res.render("outlet/outlet-register");
 });
 
 app.post("/outletsignup", function(req, res) {
-  const newOutlet = new Outlet({
-    _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    email: req.body.username,
-    password: req.body.password
-  });
-  newOutlet.save(function(err) {
+  Outlet.register({username: req.body.username, name: req.body.name}, req.body.password, function(err, outlet) {
     if(err){
       console.log(err);
+      res.redirect("/outletsignup")
     }
     else{
-      Outlet.findOne({name: req.body.name}, function(err, foundOutlet) {
-        const newMenu = new Menu({
-          _id: foundOutlet._id
-        });
-        newMenu.save();
-      });
-      res.send("outlet registered");
-    }
 
+      Outlet.findOne({username: req.body.username}, function(err, foundOutlet) {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          const newMenu = new Menu({
+            _id: foundOutlet._id,
+          });
+          newMenu.save();
+        }
+      });
+      res.redirect("/");
+    }
   });
 });
 
 
+// <----------------------------------------------------------------------->
 
+// SORTING FUNCTION
+function compare(a, b) {
+  const itemA = a.name.toUpperCase();
+  const itemB = b.name.toUpperCase();
+
+  let comparison = 0;
+  if (itemA > itemB) {
+    comparison = 1;
+  } else if (itemA < itemB) {
+    comparison = -1;
+  }
+  return comparison;
+}
 
 
 
