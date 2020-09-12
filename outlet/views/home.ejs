@@ -1,0 +1,9 @@
+<%- include("partials/header") -%>
+
+<h1><%= outlet.name %></h1>
+
+<h3>Your orders will be displayed below</h3>
+
+<a class="btn btn-lg btn-outline-primary" href="/addItem/<%= outlet._id %>">Add Item</a>
+
+<%- include("partials/footer") -%>

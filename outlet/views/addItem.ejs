@@ -1,0 +1,9 @@
+<%- include("partials/header") -%>
+
+<form action="/addItem/<%= outlet._id %>" method="post">
+  <input type="text" name="name">
+  <input type="text" name="price">
+  <input type="submit">
+</form>
+
+<%- include("partials/footer") -%>
