@@ -75,6 +75,26 @@ const menuSchema = new Schema({
   }]
 });
 
+const orderSchema = new Schema({
+    username: String,
+    outletName: String,
+    item: [{
+      name: String,
+      price: Number,
+      quantity: Number
+    }],
+    total: Number,
+    status: {
+      type: String,
+      default: "Placed"
+    }
+  },
+  {
+    timestamps: true
+  }
+);
+
+
 
 // <----------------------------------------------------------->
 
@@ -84,6 +104,7 @@ const User = new mongoose.model("User", userSchema);
 const Outlet = new mongoose.model("Outlet", outletSchema);
 const Menu = new mongoose.model("Menu", menuSchema);
 const Cart = new mongoose.model("Cart", cartSchema);
+const Order = new mongoose.model("Order", orderSchema);
 
 // <----------------------------------------------------------->
 
@@ -112,7 +133,14 @@ app.get("/", function(req, res){
 app.get("/home", function(req, res) {
   if(req.isAuthenticated()){
     Outlet.findOne({username: req.user.username}, function(err, foundOutlet) {
-      res.render("home", {outlet: foundOutlet});
+      Order.find({outletName: foundOutlet.name}, function(err, foundOrders) {
+        if(err){
+          console.log(err);
+        }
+        else {
+          res.render("home", {outlet: foundOutlet, orders: foundOrders});
+        }
+      });
     });
   }
   else{

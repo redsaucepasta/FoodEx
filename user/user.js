@@ -70,12 +70,30 @@ outletSchema.plugin(findOrCreate);
 
 const menuSchema = new Schema({
   _id : {type: Schema.Types.ObjectId, ref: 'Outlet'},
-  item:[{
+  item: [{
     name: String,
     price: Number
   }]
 });
 
+const orderSchema = new Schema({
+    username: String,
+    outletName: String,
+    item: [{
+      name: String,
+      price: Number,
+      quantity: Number
+    }],
+    total: Number,
+    status: {
+      type: String,
+      default: "Placed"
+    }
+  },
+  {
+    timestamps: true
+  }
+);
 
 // <----------------------------------------------------------->
 
@@ -85,6 +103,7 @@ const User = new mongoose.model("User", userSchema);
 const Outlet = new mongoose.model("Outlet", outletSchema);
 const Menu = new mongoose.model("Menu", menuSchema);
 const Cart = new mongoose.model("Cart", cartSchema);
+const Order = new mongoose.model("Order", orderSchema);
 
 // <----------------------------------------------------------->
 
@@ -325,6 +344,44 @@ app.get("/delete/:itemId", function(req, res) {
     res.redirect("/login");
   }
 });
+
+
+
+// PLACE ORDER
+app.get("/placeorder", function(req, res) {
+  if(req.isAuthenticated()){
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+      if(err){
+        console.log(err);
+      }
+      else {
+        const userId = foundUser._id;
+        Cart.findOne({_id: userId}, function(err, foundCart) {
+          if(err){
+            console.log(err);
+          }
+          else{
+            const newOrder = new Order({
+              username: foundUser.username,
+              outletName: foundCart.outlet,
+              item: foundCart.item,
+              total: foundCart.total
+            });
+
+            newOrder.save();
+
+            res.send("order placed");
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+
 
 
 

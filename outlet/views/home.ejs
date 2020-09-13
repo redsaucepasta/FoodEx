@@ -1,9 +1,24 @@
 <%- include("partials/header") -%>
 
 <h1><%= outlet.name %></h1>
-
+<br>
+<hr>
 <h3>Your orders will be displayed below</h3>
-
-<a class="btn btn-lg btn-outline-primary" href="/addItem/<%= outlet._id %>">Add Item</a>
+<br>
+<% orders.forEach(function(order){ %>
+  <% (order.item).forEach(function(item){ %>
+    <p><%= item.name %> (Rs.<%= item.price %>)</p>
+    <p>Quantity: <%= item.quantity %></p><br>
+<%  }); %>
+<p>Total: <%= order.total %></p>
+<p>Customer Details: <%= order.username %></p>
+<% if (order.status === "Placed") { %>
+  <a class="btn btn-success" href="#" role="button">Accept</a>
+  <a class="btn btn-danger" href="#" role="button">Reject</a>
+<% } else { %>
+  <a class="btn btn-warning" href="#" role="button">Dispach</a>
+<% } %>
+<br><hr>
+<% }); %>
 
 <%- include("partials/footer") -%>
