@@ -144,7 +144,7 @@ app.get("/home", function(req, res) {
     });
   }
   else{
-    res.send("/login");
+    res.redirect("/login");
   }
 });
 
@@ -186,6 +186,80 @@ app.post("/addItem/:outletId", function(req, res) {
 });
 
 
+// ACCEPT ORDER
+app.get("/order/:orderId/accept", function(req, res) {
+  if(req.isAuthenticated()){
+    const requestedOrderId = req.params.orderId;
+    Order.findOneAndUpdate({_id: requestedOrderId}, {status: "Accepted"}, function(err, succ) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.redirect("/home");
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+// REJECT ORDER
+app.get("/order/:orderId/reject", function(req, res) {
+  if(req.isAuthenticated()){
+    const requestedOrderId = req.params.orderId;
+    Order.findOneAndUpdate({_id: requestedOrderId}, {status: "Rejected"}, function(err, succ) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.redirect("/home");
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+// DISPATCH ORDER
+app.get("/order/:orderId/dispatch", function(req, res) {
+  if(req.isAuthenticated()){
+    const requestedOrderId = req.params.orderId;
+    Order.findOneAndUpdate({_id: requestedOrderId}, {status: "Dispatched"}, function(err, succ) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.redirect("/home");
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+// ORDER DELIVERED
+app.get("/order/:orderId/delivered", function(req, res) {
+  if(req.isAuthenticated()){
+    const requestedOrderId = req.params.orderId;
+    Order.findOneAndUpdate({_id: requestedOrderId}, {status: "Delivered"}, function(err, succ) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.redirect("/home");
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+
+
 
 // OUTLET LOGIN
 app.get("/login", function(req, res) {
@@ -210,7 +284,7 @@ app.post("/login", function(req, res) {
 });
 
 
-
+// OUTLET LOGOUT
 app.get("/logout", function(req, res){
   req.logout();
   res.redirect("/");

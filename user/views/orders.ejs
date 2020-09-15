@@ -1,0 +1,15 @@
+<%- include("partials/header") -%>
+
+
+<% orders.forEach(function(order){ %>
+  <h3><%= order.status %></h3>
+  <% (order.item).forEach(function(item){ %>
+    <p><%= item.name %> (Rs.<%= item.price %>)</p>
+    <p>Quantity: <%= item.quantity %></p>
+  <% }); %>
+  <p>Total: <%= order.total %></p>
+  <p>Outlet: <%= order.outletName %></p>
+<% }); %>
+
+
+<%- include("partials/footer") -%>

@@ -369,8 +369,7 @@ app.get("/placeorder", function(req, res) {
             });
 
             newOrder.save();
-
-            res.send("order placed");
+            res.redirect("/orders");
           }
         });
       }
@@ -382,6 +381,23 @@ app.get("/placeorder", function(req, res) {
 });
 
 
+
+app.get("/orders", function(req, res) {
+  if(req.isAuthenticated()){
+    Order.find({username: req.user.username}, function(err, foundOrders) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        foundOrders = foundOrders.reverse();
+        res.render("orders", {orders: foundOrders});
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
 
 
 

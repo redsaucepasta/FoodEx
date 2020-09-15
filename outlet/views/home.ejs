@@ -6,19 +6,38 @@
 <h3>Your orders will be displayed below</h3>
 <br>
 <% orders.forEach(function(order){ %>
-  <% (order.item).forEach(function(item){ %>
-    <p><%= item.name %> (Rs.<%= item.price %>)</p>
-    <p>Quantity: <%= item.quantity %></p><br>
+<% if (order.status === "Placed") { %>
+<% (order.item).forEach(function(item){ %>
+<p><%= item.name %> (Rs.<%= item.price %>)</p>
+<p>Quantity: <%= item.quantity %></p><br>
 <%  }); %>
 <p>Total: <%= order.total %></p>
 <p>Customer Details: <%= order.username %></p>
-<% if (order.status === "Placed") { %>
-  <a class="btn btn-success" href="#" role="button">Accept</a>
-  <a class="btn btn-danger" href="#" role="button">Reject</a>
-<% } else { %>
-  <a class="btn btn-warning" href="#" role="button">Dispach</a>
+<a class="btn btn-success" href="/order/<%= order._id %>/accept" role="button">Accept</a>
+<a class="btn btn-danger" href="/order/<%= order._id %>/reject" role="button">Reject</a>
+<br>
+<hr>
+<% } else if(order.status === "Accepted") { %>
+<% (order.item).forEach(function(item){ %>
+<p><%= item.name %> (Rs.<%= item.price %>)</p>
+<p>Quantity: <%= item.quantity %></p><br>
+<%  }); %>
+<p>Total: <%= order.total %></p>
+<p>Customer Details: <%= order.username %></p>
+<a class="btn btn-warning" href="/order/<%= order._id %>/dispatch" role="button">Out for Delivery</a>
+<br>
+<hr>
+<% } else if(order.status === "Dispatched") { %>
+<% (order.item).forEach(function(item){ %>
+<p><%= item.name %> (Rs.<%= item.price %>)</p>
+<p>Quantity: <%= item.quantity %></p><br>
+<%  }); %>
+<p>Total: <%= order.total %></p>
+<p>Customer Details: <%= order.username %></p>
+<a class="btn btn-warning" href="/order/<%= order._id %>/delivered" role="button">Delivered</a>
+<br>
+<hr>
 <% } %>
-<br><hr>
 <% }); %>
 
 <%- include("partials/footer") -%>
