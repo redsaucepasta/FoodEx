@@ -361,15 +361,20 @@ app.get("/placeorder", function(req, res) {
             console.log(err);
           }
           else{
-            const newOrder = new Order({
-              username: foundUser.username,
-              outletName: foundCart.outlet,
-              item: foundCart.item,
-              total: foundCart.total
-            });
+            if(foundCart.total !== 0){
+              const newOrder = new Order({
+                username: foundUser.username,
+                outletName: foundCart.outlet,
+                item: foundCart.item,
+                total: foundCart.total
+              });
 
-            newOrder.save();
-            res.redirect("/orders");
+              newOrder.save();
+              res.redirect("/orders");
+            }
+            else {
+              res.redirect("/home/cart");
+            }
           }
         });
       }

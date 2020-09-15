@@ -138,6 +138,7 @@ app.get("/home", function(req, res) {
           console.log(err);
         }
         else {
+          foundOrders = foundOrders.reverse();
           res.render("home", {outlet: foundOutlet, orders: foundOrders});
         }
       });
@@ -176,11 +177,35 @@ app.post("/addItem/:outletId", function(req, res) {
       else {
         console.log("added");
         console.log(details);
-        res.redirect("/home");
+        res.redirect("/addItem/" + req.params.outletId);
       }
     });
   }
   else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/orders", function(req, res) {
+  if(req.isAuthenticated()){
+    Outlet.findOne({username: req.user.username}, function(err, foundOutlet) {
+      if(err){
+        console.log(err);
+      }
+      else {
+        Order.find({outletName: foundOutlet.name}, function(err, foundOrders) {
+          if (err) {
+            console.log(err);
+          }
+          else {
+            foundOrders = foundOrders.reverse();
+            res.render("orders", {outlet: foundOutlet, orders: foundOrders});
+          }
+        });
+      }
+    });
+  }
+  else{
     res.redirect("/login");
   }
 });

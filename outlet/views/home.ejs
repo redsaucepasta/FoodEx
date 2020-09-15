@@ -3,13 +3,15 @@
 <h1><%= outlet.name %></h1>
 <br>
 <hr>
-<h3>Your orders will be displayed below</h3>
+<h3>Your current orders will be displayed below</h3>
 <br>
 <% orders.forEach(function(order){ %>
 <% if (order.status === "Placed") { %>
 <% (order.item).forEach(function(item){ %>
-<p><%= item.name %> (Rs.<%= item.price %>)</p>
-<p>Quantity: <%= item.quantity %></p><br>
+  <ul>
+    <li><%= item.name %> (Rs.<%= item.price %>)</li>
+    <p>Quantity: <%= item.quantity %></p>
+  </ul>
 <%  }); %>
 <p>Total: <%= order.total %></p>
 <p>Customer Details: <%= order.username %></p>
@@ -19,8 +21,10 @@
 <hr>
 <% } else if(order.status === "Accepted") { %>
 <% (order.item).forEach(function(item){ %>
-<p><%= item.name %> (Rs.<%= item.price %>)</p>
-<p>Quantity: <%= item.quantity %></p><br>
+  <ul>
+    <li><%= item.name %> (Rs.<%= item.price %>)</li>
+    <p>Quantity: <%= item.quantity %></p>
+  </ul>
 <%  }); %>
 <p>Total: <%= order.total %></p>
 <p>Customer Details: <%= order.username %></p>
@@ -29,8 +33,10 @@
 <hr>
 <% } else if(order.status === "Dispatched") { %>
 <% (order.item).forEach(function(item){ %>
-<p><%= item.name %> (Rs.<%= item.price %>)</p>
-<p>Quantity: <%= item.quantity %></p><br>
+  <ul>
+    <li><%= item.name %> (Rs.<%= item.price %>)</li>
+    <p>Quantity: <%= item.quantity %></p>
+  </ul>
 <%  }); %>
 <p>Total: <%= order.total %></p>
 <p>Customer Details: <%= order.username %></p>

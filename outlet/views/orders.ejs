@@ -1,0 +1,24 @@
+<%- include("partials/header") -%>
+
+<h1><%= outlet.name %></h1>
+<h3>Your previous orders will be displayed below</h3>
+<hr>
+<br>
+
+<% orders.forEach(function(order){ %>
+  <% if (order.status === "Delivered" || order.status === "Rejected") { %>
+    <h5><strong><%= order.status %></strong></h5>
+    <p>Customer Details: <%= order.username %></p>
+    <p>Total: <%= order.total %></p>
+    <% (order.item).forEach(function(item){ %>
+      <ul>
+        <li><%= item.name %> (Rs.<%= item.price %>)</li>
+        <p>Quantity: <%= item.quantity %></p>
+      </ul>
+    <%  }); %>
+    <p>Ordered On: <%= order.createdAt %></p>
+    <hr><br>
+  <% } %>
+<% }); %>
+
+<%- include("partials/footer") -%>

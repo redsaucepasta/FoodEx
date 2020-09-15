@@ -9,8 +9,11 @@
         <div class="card-body">
           <form action="/menu/<%= outletId %>" method="POST">
             <% (menu.item).forEach(function(item){%>
-            <p><strong><%= item.name %></strong> : Rs. <%= item.price %>
-            <input type="number" name="<%= item.name %>" min="0"></p><br>
+            <strong><%= item.name %></strong> : Rs. <%= item.price %>
+              <div class="mr-auto">
+                <input type="number" name="<%= item.name %>" min="0">
+              </div>
+            <br>
             <% }); %>
             <input class="btn btn-dark" type="submit" value="Add to Cart">
           </form>
