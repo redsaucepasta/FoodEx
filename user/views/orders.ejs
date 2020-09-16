@@ -11,7 +11,8 @@
       <p>Quantity: <%= item.quantity %></p>
     </ul>
   <% }); %>
-  <p><strong>Ordered at: </strong> <%= order.createdAt %></p>
+  <p><strong>Ordered on: </strong> <%= order.createdAt %></p>
+  <p><%= order.outletName %> contact number: <%= order.outletPhone %></p>
   <hr><br>
 <% }); %>
 

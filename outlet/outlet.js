@@ -41,6 +41,10 @@ mongoose.set('useFindAndModify', false);
 const userSchema = new Schema({
   username: String,
   password: String,
+  name: String,
+  block: String,
+  room: Number,
+  phone: Number,
   cart: [{type: Schema.Types.ObjectId, ref: 'Cart'}]
 });
 
@@ -57,8 +61,8 @@ const cartSchema = new Schema({
 });
 
 const outletSchema = new Schema({
-  // _id: Schema.Types.ObjectId,
   name: String,
+  phone: Number,
   username: String,
   password: String,
   menu: [{type: Schema.Types.ObjectId, ref: 'Menu'}]
@@ -77,7 +81,12 @@ const menuSchema = new Schema({
 
 const orderSchema = new Schema({
     username: String,
+    name: String,
+    block: String,
+    room: Number,
+    userPhone: Number,
     outletName: String,
+    outletPhone: Number,
     item: [{
       name: String,
       price: Number,
@@ -186,6 +195,8 @@ app.post("/addItem/:outletId", function(req, res) {
   }
 });
 
+
+// ORDERS
 app.get("/orders", function(req, res) {
   if(req.isAuthenticated()){
     Outlet.findOne({username: req.user.username}, function(err, foundOutlet) {

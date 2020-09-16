@@ -8,15 +8,20 @@
 <% orders.forEach(function(order){ %>
   <% if (order.status === "Delivered" || order.status === "Rejected") { %>
     <h5><strong><%= order.status %></strong></h5>
-    <p>Customer Details: <%= order.username %></p>
-    <p>Total: <%= order.total %></p>
+    <strong>Customer Details:</strong>
+    <ul>
+      <li><%= order.name %></li>
+      <li><%= order.userPhone %></li>
+      <li><%= order.block %>-<%= order.room %></li>
+    </ul>
+    <p><strong>Total:</strong> <%= order.total %></p>
     <% (order.item).forEach(function(item){ %>
       <ul>
         <li><%= item.name %> (Rs.<%= item.price %>)</li>
         <p>Quantity: <%= item.quantity %></p>
       </ul>
     <%  }); %>
-    <p>Ordered On: <%= order.createdAt %></p>
+    <p><strong>Ordered On:</strong> <%= order.createdAt %></p>
     <hr><br>
   <% } %>
 <% }); %>

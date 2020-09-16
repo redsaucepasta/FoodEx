@@ -14,7 +14,12 @@
   </ul>
 <%  }); %>
 <p>Total: <%= order.total %></p>
-<p>Customer Details: <%= order.username %></p>
+Customer Details:
+<ul>
+  <li><%= order.name %></li>
+  <li><%= order.userPhone %></li>
+  <li><%= order.block %>-<%= order.room %></li>
+</ul>
 <a class="btn btn-success" href="/order/<%= order._id %>/accept" role="button">Accept</a>
 <a class="btn btn-danger" href="/order/<%= order._id %>/reject" role="button">Reject</a>
 <br>
@@ -27,7 +32,12 @@
   </ul>
 <%  }); %>
 <p>Total: <%= order.total %></p>
-<p>Customer Details: <%= order.username %></p>
+Customer Details:
+<ul>
+  <li><%= order.name %></li>
+  <li><%= order.userPhone %></li>
+  <li><%= order.block %>-<%= order.room %></li>
+</ul>
 <a class="btn btn-warning" href="/order/<%= order._id %>/dispatch" role="button">Out for Delivery</a>
 <br>
 <hr>
@@ -39,7 +49,12 @@
   </ul>
 <%  }); %>
 <p>Total: <%= order.total %></p>
-<p>Customer Details: <%= order.username %></p>
+Customer Details:
+<ul>
+  <li><%= order.name %></li>
+  <li><%= order.userPhone %></li>
+  <li><%= order.block %>-<%= order.room %></li>
+</ul>
 <a class="btn btn-warning" href="/order/<%= order._id %>/delivered" role="button">Delivered</a>
 <br>
 <hr>

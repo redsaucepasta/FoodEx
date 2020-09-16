@@ -39,9 +39,12 @@ mongoose.set('useFindAndModify', false);
 
 // SCHEMAS
 const userSchema = new Schema({
-  // _id: Schema.Types.ObjectId,
   username: String,
   password: String,
+  name: String,
+  block: String,
+  room: Number,
+  phone: Number,
   cart: [{type: Schema.Types.ObjectId, ref: 'Cart'}]
 });
 userSchema.plugin(passportLocalMongoose);
@@ -59,8 +62,8 @@ const cartSchema = new Schema({
 });
 
 const outletSchema = new Schema({
-  // _id: Schema.Types.ObjectId,
   name: String,
+  phone: Number,
   username: String,
   password: String,
   menu: [{type: Schema.Types.ObjectId, ref: 'Menu'}]
@@ -78,7 +81,12 @@ const menuSchema = new Schema({
 
 const orderSchema = new Schema({
     username: String,
+    name: String,
+    block: String,
+    room: Number,
+    userPhone: Number,
     outletName: String,
+    outletPhone: Number,
     item: [{
       name: String,
       price: Number,
@@ -134,8 +142,15 @@ app.get("/", function(req, res){
 // USER HOME PAGE
 app.get("/home", function(req, res){
   if (req.isAuthenticated()){
-    Outlet.find({}, function(err, outlets){
-      res.render("home", {outletList: outlets, user: req.user.username});
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+      if(err){
+        console.log(err);
+      }
+      else {
+        Outlet.find({}, function(err, outlets){
+          res.render("home", {outletList: outlets, user: foundUser});
+        });
+      }
     });
   } else {
     res.redirect("/login");
@@ -362,15 +377,29 @@ app.get("/placeorder", function(req, res) {
           }
           else{
             if(foundCart.total !== 0){
-              const newOrder = new Order({
-                username: foundUser.username,
-                outletName: foundCart.outlet,
-                item: foundCart.item,
-                total: foundCart.total
+              Outlet.findOne({name: foundCart.outlet}, function(err, foundOutlet) {
+                const newOrder = new Order({
+                  username: foundUser.username,
+                  name: foundUser.name,
+                  block: foundUser.block,
+                  room: foundUser.room,
+                  userPhone: foundUser.phone,
+                  outletName: foundCart.outlet,
+                  outletPhone: foundOutlet.phone,
+                  item: foundCart.item,
+                  total: foundCart.total
+                });
+                newOrder.save();
+                Cart.findOneAndUpdate({_id: foundUser._id},  { item: [ ], total: 0, outlet: "" }, function(err, succ) {
+                  if (err) {
+                    console.log(err);
+                  }
+                  else {
+                    console.log("emptied cart");
+                  }
+                });
+                res.redirect("/orders");
               });
-
-              newOrder.save();
-              res.redirect("/orders");
             }
             else {
               res.redirect("/home/cart");
@@ -454,7 +483,7 @@ app.get("/signup", function(req, res) {
 });
 
 app.post("/signup", function(req, res) {
-  User.register({username: req.body.username}, req.body.password, function(err, user) {
+  User.register({username: req.body.username, name: req.body.name, block: req.body.block, room: req.body.room, phone: req.body.phone}, req.body.password, function(err, user) {
     if(err){
       console.log(err);
       res.redirect("/signup")
