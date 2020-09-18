@@ -3,17 +3,6 @@
 
 
 <form action="/confirm" method="post">
-  <p><strong>Outlet: </strong> <%= order.outletName %></p>
-  <p><strong>Total: </strong> <%= order.total %></p>
-  <p><strong>Payment Method: </strong> <%= order.payment %></p>
-  <% (order.item).forEach(function(item){ %>
-    <ul>
-      <li><%= item.name %> (Rs.<%= item.price %>)</li>
-      <p>Quantity: <%= item.quantity %></p>
-    </ul>
-  <% }); %>
-  <hr><br>
-
   <input type="submit" class="btn btn-primary" value="Confirm Order">
 </form>
 <%- include("partials/footer") -%>
