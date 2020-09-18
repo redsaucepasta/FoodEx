@@ -15,6 +15,7 @@
       <li><%= order.block %>-<%= order.room %></li>
     </ul>
     <p><strong>Total:</strong> <%= order.total %></p>
+    <p><strong>Payment Method:</strong> <%= order.payment %></p>
     <% (order.item).forEach(function(item){ %>
       <ul>
         <li><%= item.name %> (Rs.<%= item.price %>)</li>

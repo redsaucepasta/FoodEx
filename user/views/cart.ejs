@@ -13,6 +13,15 @@
 <% }); %>
 
 <br>
-<a class="btn btn-lg btn-outline-danger" href="/placeorder" role="button">Place Order</a>
+<form action="/placeorder" method="post">
+  <p>
+  <label for="block">Payment Method</label>
+  <select class="custom-select" id="block" name="payment">
+    <option value="Paytm">Paytm</option>
+    <option value="Cash">Cash</option>
+  </select></p>
+  <input type="submit" class="btn btn-lg btn-outline-danger" value="Place order">
+</form>
+
 
 <%- include("partials/footer") -%>

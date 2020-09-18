@@ -87,6 +87,7 @@ const orderSchema = new Schema({
     userPhone: Number,
     outletName: String,
     outletPhone: Number,
+    payment: String,
     item: [{
       name: String,
       price: Number,

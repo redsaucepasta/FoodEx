@@ -13,8 +13,9 @@
     <p>Quantity: <%= item.quantity %></p>
   </ul>
 <%  }); %>
-<p>Total: <%= order.total %></p>
-Customer Details:
+<p><strong>Total:</strong> <%= order.total %></p>
+<p><strong>Payment Method:</strong> <%= order.payment %></p>
+<strong>Customer Details:</strong>
 <ul>
   <li><%= order.name %></li>
   <li><%= order.userPhone %></li>

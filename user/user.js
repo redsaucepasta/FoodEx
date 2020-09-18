@@ -87,6 +87,7 @@ const orderSchema = new Schema({
     userPhone: Number,
     outletName: String,
     outletPhone: Number,
+    payment: String,
     item: [{
       name: String,
       price: Number,
@@ -95,7 +96,7 @@ const orderSchema = new Schema({
     total: Number,
     status: {
       type: String,
-      default: "Placed"
+      default: "Unconfirmed"
     }
   },
   {
@@ -363,7 +364,7 @@ app.get("/delete/:itemId", function(req, res) {
 
 
 // PLACE ORDER
-app.get("/placeorder", function(req, res) {
+app.post("/placeorder", function(req, res) {
   if(req.isAuthenticated()){
     User.findOne({username: req.user.username}, function(err, foundUser) {
       if(err){
@@ -386,6 +387,7 @@ app.get("/placeorder", function(req, res) {
                   userPhone: foundUser.phone,
                   outletName: foundCart.outlet,
                   outletPhone: foundOutlet.phone,
+                  payment: req.body.payment,
                   item: foundCart.item,
                   total: foundCart.total
                 });
@@ -398,7 +400,16 @@ app.get("/placeorder", function(req, res) {
                     console.log("emptied cart");
                   }
                 });
-                res.redirect("/orders");
+                Order.find({username: req.user.username}, function(err, foundOrders) {
+                  if (err) {
+                    console.log(err);
+                  }
+                  else {
+                    foundOrders = foundOrders.reverse();
+                    let order = foundOrders[0];
+                    res.render("confirm", {order: order});
+                  }
+                });
               });
             }
             else {
@@ -414,6 +425,31 @@ app.get("/placeorder", function(req, res) {
   }
 });
 
+
+app.post("/confirm", function(req, res){
+  if(req.isAuthenticated()){
+    Order.find({username: req.user.username}, function(err, foundOrders) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        foundOrders = foundOrders.reverse();
+        let order = foundOrders[0];
+        Order.findOneAndUpdate({_id: order._id}, {status: "Placed"}, function(err, succ) {
+          if (err) {
+            console.log(err);
+          }
+          else {
+            res.redirect("/orders");
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
 
 
 app.get("/orders", function(req, res) {
