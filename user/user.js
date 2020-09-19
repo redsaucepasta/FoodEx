@@ -96,7 +96,7 @@ const orderSchema = new Schema({
     total: Number,
     status: {
       type: String,
-      default: "Unconfirmed"
+      default: "Placed"
     }
   },
   {
@@ -182,7 +182,6 @@ app.post("/menu/:outletId", function(req, res) {
     let details = {};
     let detailsArray = [];
     let existingItems = [];
-    let newArrayOfDetails = [];
     let outlet = "some outlet";
     let newQuantity = 0;
     console.log(body);
@@ -288,27 +287,21 @@ app.get("/home/cart", function(req, res) {
           if(!err){
             items = foundCart.item;
             items.forEach(function(item) {
-              // console.log(item.price+ "  " + item.quantity);
               total = total + (item.price*item.quantity);
-              // console.log(total);
             });
             outlet = foundCart.outlet;
-            // console.log("\n"+total);
           }
           else {
             console.log(err);
           }
-          // console.log(total);
           if(total===0){
             outlet=""
           }
           Cart.findOneAndUpdate({_id: foundUser._id}, {total: total, outlet:outlet}, function(err, foundCart) {
-            // console.log("\n"+total);
-        });
-        Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
-          // console.log(foundCart);
-          res.render("cart", {carttotal: foundCart.total, cart: foundCart.item, outlet: foundCart.outlet});
-        });
+            Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+              res.render("cart", {carttotal: foundCart.total, cart: foundCart.item, outlet: foundCart.outlet});
+            });
+          });
         });
       }
     });
@@ -319,7 +312,7 @@ app.get("/home/cart", function(req, res) {
 });
 
 
-
+// DELETE ITEMS FROM CART
 app.get("/delete/:itemId", function(req, res) {
   if(req.isAuthenticated){
     let items = [];
@@ -398,16 +391,7 @@ app.post("/placeorder", function(req, res) {
                   }
                   else {
                     console.log("emptied cart");
-                  }
-                });
-                Order.find({username: req.user.username}, function(err, foundOrders) {
-                  if (err) {
-                    console.log(err);
-                  }
-                  else {
-                    foundOrders = foundOrders.reverse();
-                    let order = foundOrders[0];
-                    res.render("confirm", {order: order});
+                    res.redirect("/orders");
                   }
                 });
               });
@@ -426,32 +410,8 @@ app.post("/placeorder", function(req, res) {
 });
 
 
-app.post("/confirm", function(req, res){
-  if(req.isAuthenticated()){
-    Order.find({username: req.user.username}, function(err, foundOrders) {
-      if (err) {
-        console.log(err);
-      }
-      else {
-        foundOrders = foundOrders.reverse();
-        let order = foundOrders[0];
-        Order.findOneAndUpdate({_id: order._id}, {status: "Placed"}, function(err, succ) {
-          if (err) {
-            console.log(err);
-          }
-          else {
-            res.redirect("/orders");
-          }
-        });
-      }
-    });
-  }
-  else {
-    res.redirect("/login");
-  }
-});
 
-
+// DISPLAY ORDERS
 app.get("/orders", function(req, res) {
   if(req.isAuthenticated()){
     Order.find({username: req.user.username}, function(err, foundOrders) {
@@ -544,6 +504,17 @@ app.post("/signup", function(req, res) {
   });
 });
 
+
+// ABOUT
+app.get("/about", function(req, res) {
+  res.render("about");
+});
+
+
+// CONTACT US
+app.get("/contact", function(req, res) {
+  res.render("contact");
+});
 
 // <----------------------------------------------------------------------->
 
