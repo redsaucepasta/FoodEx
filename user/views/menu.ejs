@@ -11,7 +11,14 @@
           <% (menu.item).forEach(function(item){%>
           <div class="menu-q">
             <strong><%= item.name %></strong>  <span class="price">Rs. <%= item.price %></span>
-            <input class="num-in" type="number" name="<%= item.name %>" min="0" />
+            <select name="<%= item.name %>" class="num-in">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
           </div>
           <br>
           <% }); %>

@@ -117,9 +117,10 @@ body {
   right: 0%;
 }
 .num-in{
-  width: 20%;
+  position: absolute;
+  right: 50%;
 }
 .price{
   position: absolute;
-  left: 30%;
+  right: 30%;
 }
