@@ -28,8 +28,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://admin-amit:sonunandini@cluster0.k902j.mongodb.net/FoodEx", {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 mongoose.set('useFindAndModify', false);
 
@@ -135,7 +134,13 @@ passport.deserializeUser(function(id, done) {
 
 // lANDING PAGE
 app.get("/", function(req, res){
-  res.render("landing");
+  if(req.isAuthenticated())
+  {
+    res.redirect("/home");
+  }
+  else {
+    res.render("landing");
+  }
 });
 
 
@@ -537,6 +542,6 @@ function compare(a, b) {
 
 
 
-app.listen(3000, function() {
+app.listen(process.env.PORT || 3000, function() {
   console.log("User Server\nServer started on port 3000");
 });

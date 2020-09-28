@@ -1,7 +1,7 @@
 <%- include("partials/header") -%>
 
 <div class="centered">
-  <h1>Welcome <%= user.name %></h1>
+  <h2>Welcome <%= user.name %></h2>
 </div>
 <br><br>
 
@@ -9,16 +9,18 @@
 
 <div class="row">
   <% outletList.forEach(function(outlet){ %>
-  <div class="col-sm-4">
-    <div class="card">
+  <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="card text-center">
       <div class="card-body">
         <h5 class="card-title card-centered"><%= outlet.name %></h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a class="btn btn-outline-primary btn-block" href="/menu/<%= outlet._id %>">Menu</a>
+        <a class="btn btn-outline-light" href="/menu/<%= outlet._id %>">Menu</a>
       </div>
     </div>
   </div>
   <% }); %>
 </div>
+
+
+
 
 <%- include("partials/footer") -%>
