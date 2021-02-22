@@ -124,3 +124,7 @@ body {
   position: absolute;
   right: 30%;
 }
+
+.btn{
+  display: inline-block;
+}
