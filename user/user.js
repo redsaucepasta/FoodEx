@@ -501,7 +501,9 @@ app.get("/orders", function(req, res) {
       }
       else {
         foundOrders = foundOrders.reverse();
-        res.render("orders", {orders: foundOrders});
+        let first = foundOrders[0];
+        foundOrders.shift();
+        res.render("orders", {orders: foundOrders, firstOrder: first});
       }
     });
   }

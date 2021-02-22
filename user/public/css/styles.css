@@ -20,7 +20,7 @@
   font-size: 2.5em;
 }
 
-.card{
+.card-home{
   background-color: #111;
   margin-top: 50px;
   /* width: 50%; */
@@ -32,7 +32,7 @@
 }
 
 .cart-card{
-  background-color: #e0e0e0;
+  background-color: #f7f7f7;
   /* width: 60%; */
 }
 
@@ -108,24 +108,16 @@ body {
   margin-top: 10px;
   margin-bottom: 30px;
 }
-.cart-item-q{
-  position: absolute;
-  right: 43%;
-}
-.rem-bt{
-  position: absolute;
-  right:30%;
+
+.del-bt{
+  margin-left: 10%;
 }
 
-.delW-bt{
-  position: absolute;
-  right: 0%;
+.quan{
+  margin-left: 3%;
+  margin-right: 3%;
 }
 
-.add-bt{
-  position: absolute;
-  right: 50%;
-}
 .num-in{
   position: absolute;
   right: 50%;
@@ -135,6 +127,11 @@ body {
   right: 30%;
 }
 
-button{
-  display: block;
+.qpm{
+  display: inline-block;
+  width: 68%;
+  position: absolute;
+  left: 35%;
+  margin-left: 0;
+  margin-right: 0;
 }
