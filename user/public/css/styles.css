@@ -125,6 +125,6 @@ body {
   right: 30%;
 }
 
-.btn{
-  display: inline-block;
+button{
+  display: block;
 }
