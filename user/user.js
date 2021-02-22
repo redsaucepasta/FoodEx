@@ -316,7 +316,7 @@ app.get("/home/cart", function(req, res) {
 });
 
 
-// DELETE ITEMS FROM CART
+// DELETE ONE ITEM FROM CART
 app.get("/delete/:itemId", function(req, res) {
   if(req.isAuthenticated){
     let items = [];
@@ -357,6 +357,83 @@ app.get("/delete/:itemId", function(req, res) {
     res.redirect("/login");
   }
 });
+
+
+// ADD ONE ITEM TO CART
+app.get("/add/:itemId", function(req, res) {
+  if(req.isAuthenticated){
+    let items = [];
+    const requestedItemId = req.params.itemId;
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+      if(!err){
+        Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+          if(!err){
+            items = foundCart.item;
+            for(let i=0; i<items.length; i++){
+              if(items[i]._id == requestedItemId){
+                let newq = items[i].quantity + 1;
+                items[i].quantity = newq;
+              }
+            }
+            Cart.findOneAndUpdate({_id: foundUser._id}, {item: items}, function(err, succ) {
+              if(err){
+                console.log(err);
+              }
+              else{
+                res.redirect("/home/cart");
+              }
+            });
+          }
+          else {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+
+
+// DELETE WHOLE ITEM FROM CART
+app.get("/deleteWhole/:itemId", function(req, res) {
+  if(req.isAuthenticated){
+    let items = [];
+    const requestedItemId = req.params.itemId;
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+      if(!err){
+        Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+          if(!err){
+            items = foundCart.item;
+            for(let i=0; i<items.length; i++){
+              if(items[i]._id == requestedItemId){
+                items.splice(i,1);
+              }
+            }
+            Cart.findOneAndUpdate({_id: foundUser._id}, {item: items}, function(err, succ) {
+              if(err){
+                console.log(err);
+              }
+              else{
+                res.redirect("/home/cart");
+              }
+            });
+          }
+          else {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
 
 
 

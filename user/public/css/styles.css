@@ -106,15 +106,25 @@ body {
 }
 .menu-q{
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .cart-item-q{
   position: absolute;
-  left: 40%;
+  right: 43%;
 }
 .rem-bt{
   position: absolute;
+  right:30%;
+}
+
+.delW-bt{
+  position: absolute;
   right: 0%;
+}
+
+.add-bt{
+  position: absolute;
+  right: 50%;
 }
 .num-in{
   position: absolute;
