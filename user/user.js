@@ -576,6 +576,7 @@ app.post("/signup", function(req, res) {
           else {
             const newCart = new Cart({
               _id: foundUser._id,
+              outlet: "",
               total: 0
             });
             newCart.save();
