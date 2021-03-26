@@ -28,7 +28,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-mongoose.connect("mongodb+srv://admin-amit:sonunandini@cluster0.k902j.mongodb.net/FoodEx", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost:27017/FoodEx", {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set("useCreateIndex", true);
 mongoose.set('useFindAndModify', false);
 
@@ -316,7 +316,7 @@ app.get("/home/cart", function(req, res) {
 });
 
 
-// DELETE ITEMS FROM CART
+// DELETE ONE ITEM FROM CART
 app.get("/delete/:itemId", function(req, res) {
   if(req.isAuthenticated){
     let items = [];
@@ -357,6 +357,83 @@ app.get("/delete/:itemId", function(req, res) {
     res.redirect("/login");
   }
 });
+
+
+// ADD ONE ITEM TO CART
+app.get("/add/:itemId", function(req, res) {
+  if(req.isAuthenticated){
+    let items = [];
+    const requestedItemId = req.params.itemId;
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+      if(!err){
+        Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+          if(!err){
+            items = foundCart.item;
+            for(let i=0; i<items.length; i++){
+              if(items[i]._id == requestedItemId){
+                let newq = items[i].quantity + 1;
+                items[i].quantity = newq;
+              }
+            }
+            Cart.findOneAndUpdate({_id: foundUser._id}, {item: items}, function(err, succ) {
+              if(err){
+                console.log(err);
+              }
+              else{
+                res.redirect("/home/cart");
+              }
+            });
+          }
+          else {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+
+
+// DELETE WHOLE ITEM FROM CART
+app.get("/deleteWhole/:itemId", function(req, res) {
+  if(req.isAuthenticated){
+    let items = [];
+    const requestedItemId = req.params.itemId;
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+      if(!err){
+        Cart.findOne({_id: foundUser._id}, function(err, foundCart) {
+          if(!err){
+            items = foundCart.item;
+            for(let i=0; i<items.length; i++){
+              if(items[i]._id == requestedItemId){
+                items.splice(i,1);
+              }
+            }
+            Cart.findOneAndUpdate({_id: foundUser._id}, {item: items}, function(err, succ) {
+              if(err){
+                console.log(err);
+              }
+              else{
+                res.redirect("/home/cart");
+              }
+            });
+          }
+          else {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
 
 
 
@@ -424,7 +501,9 @@ app.get("/orders", function(req, res) {
       }
       else {
         foundOrders = foundOrders.reverse();
-        res.render("orders", {orders: foundOrders});
+        let first = foundOrders[0];
+        foundOrders.shift();
+        res.render("orders", {orders: foundOrders, firstOrder: first});
       }
     });
   }
@@ -497,6 +576,7 @@ app.post("/signup", function(req, res) {
           else {
             const newCart = new Cart({
               _id: foundUser._id,
+              outlet: "",
               total: 0
             });
             newCart.save();

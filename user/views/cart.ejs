@@ -1,39 +1,96 @@
 <%- include("partials/header") -%>
 
 <!-- <div class="container"> -->
-  <h2>Cart</h2>
-  <br>
-  <h4>Outlet: <%= outlet %></h4>
-  <h5>Total: <%= carttotal %></h5>
-  <div class="card cart-card">
+<h2>Cart</h2>
+<br>
+<h4>Outlet: <%= outlet %></h4>
+<h5>Total: <%= carttotal %></h5>
+<div class="card cart-card">
   <% cart.forEach(function(item){ %>
-    <div class="card-body">
-        <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="menu-q">
-              <span class="cart-item"><strong><%= item.name %></strong></span>
-              <span class="cart-item-q">Quantity: <%= item.quantity %></span>
-              <a class="btn btn-outline-dark rem-bt" href="/delete/<%= item._id %>" role="button">Remove</a>
-              <p><span class="cart-item-p">Price: <%= item.price %></span></p>
-            </div>
-          </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="menu-q">
+          <span class="cart-item"><strong><%= item.name %></strong></span>
+          <div class="qpm">
+            <a href="/add/<%= item._id %>" class="btn btn-outline-warning">+</a>
+            <span class="quan">  <%= item.quantity %> </span>
+            <a href="/delete/<%= item._id %>" class="btn btn-outline-warning">-</a>
+            <button class="btn btn-outline-danger del-bt" data-toggle="modal" data-target="#exampleModal""><i class="fa fa-trash-o"></i></button>
         </div>
-      </div>
-        <% }); %>
-    </div>
 
-  <br>
-  <form action="/placeorder" method="post">
-    <p>
+
+<!-- MODAL -->
+  <div class=" modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure You want to Delete <strong><%= item.name %></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                  <a type="button" href="/deleteWhole/<%= item._id %>" class="btn btn-outline-danger">Delete</a>
+                </div>
+              </div>
+            </div>
+        </div>
+        <script>
+          $('#myModal').on('shown.bs.modal', function() {
+            $('#myInput').trigger('focus')
+          })
+        </script>
+        <!-- MODAL END  -->
+
+        <p><span class="cart-item-p">Price: <%= item.price %></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<% }); %>
+</div>
+
+<br>
+<form action="/placeorder" method="post">
+  <p>
     <label for="block">Payment Method</label>
     <select id="block" name="payment">
       <option value="Paytm">Paytm</option>
       <option value="Cash">Cash</option>
     </select></p>
-    <input type="submit" class="btn btn-lg btn-outline-danger sub-bt" value="Place order">
-  </form>
-  <hr>
-  <br><br>
+  <input type="btn" class="btn btn-outline-success sub-bt" value="Place order" data-toggle="modal" data-target="#OrderModal">
+
+  <!-- MODAL -->
+  <div class="modal fade" id="OrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you Sure You want to place Order?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-success">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $('#myModal').on('shown.bs.modal', function() {
+      $('#myInput').trigger('focus')
+    })
+  </script>
+</form>
+<hr>
+<br><br>
 <!-- </div> -->
 
 
