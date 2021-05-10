@@ -16,12 +16,12 @@
             <a href="/add/<%= item._id %>" class="btn btn-outline-warning">+</a>
             <span class="quan">  <%= item.quantity %> </span>
             <a href="/delete/<%= item._id %>" class="btn btn-outline-warning">-</a>
-            <button class="btn btn-outline-danger del-bt" data-toggle="modal" data-target="#exampleModal""><i class="fa fa-trash-o"></i></button>
+            <button class="btn btn-outline-danger del-bt" data-toggle="modal" data-target="#exampleModal<%= item._id %>""><i class="fa fa-trash-o"></i></button>
         </div>
 
 
 <!-- MODAL -->
-  <div class=" modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class=" modal fade" id="exampleModal<%= item._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
