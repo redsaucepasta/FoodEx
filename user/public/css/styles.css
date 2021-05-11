@@ -9,6 +9,10 @@
     text-align: center;
 }
 
+.landing-align{
+  margin-top: 150px;
+}
+
 .card-centered {
     /* padding-top: 200px; */
     margin-top: 10px;
