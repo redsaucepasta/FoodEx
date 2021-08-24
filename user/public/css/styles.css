@@ -1,53 +1,140 @@
-
-.navbar{
+.navbar {
   background-color: #e3f2fd;
 }
 
 .centered {
-    /* padding-top: 200px; */
-    margin-top: 3%;
-    text-align: center;
+  /* padding-top: 200px; */
+  margin-top: 3%;
+  text-align: center;
+  /* width: 40%; */
+  /* margin: auto; */
 }
 
-.landing-align{
-  margin-top: 150px;
+.landing-align {
+  width: 50%;
+  margin: auto;
+  margin-top: 70px;
+  padding: 30px 0 50px 0;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.landing-align-contact {
+  width: 90%;
+  margin: auto;
+  margin-top: 70px;
+  padding: 30px 0 80px 0;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.landing-align-menu {
+  width: 80%;
+  margin: auto;
+  margin-top: 70px;
+  padding: 30px 0 50px 0;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.landing-align-order {
+  width: 100%;
+  margin: auto;
+  margin-top: 70px;
+  padding: 30px 0 50px 0;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.auth-card {
+  width: 60%;
+  margin: auto;
+  /* background-color: #e0e0e0; */
+}
+
+.menu-card {
+  width: 100%;
+  margin: auto;
+  padding: 0 40px 0 40px;
+  /* background-color: #e0e0e0; */
+}
+
+.menu-start {
+  /* width: 100%; */
+  /* margin: auto; */
+  /* background-color: #e0e0e0; */
+  /* text-align: left; */
+  margin-right: 10%;
+  float: left;
+}
+
+.menu-start-status {
+  /* width: 100%; */
+  /* margin: auto; */
+  /* background-color: #e0e0e0; */
+  /* text-align: left; */
+  color: black;
+  margin-right: 10%;
+  float: left;
+}
+
+.menu-price {
+  /* text-align: right; */
+  /* margin-right: 10%; */
+  margin-left: 0%;
+  float: right;
+}
+
+.menu-price-status {
+  /* text-align: right; */
+  /* margin-right: 10%; */
+  color: rgb(94, 240, 36);
+  margin-left: 0%;
+  float: right;
+}
+
+.menu-price-cart {
+  /* text-align: right; */
+  /* margin-right: 10%; */
+  margin-left: 10%;
+  float: right;
+}
+
+.cart-bt {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.form-group {
+  margin: 50px 0 50px 0;
 }
 
 .card-centered {
-    /* padding-top: 200px; */
-    margin-top: 10px;
-    text-align: center;
+  /* padding-top: 200px; */
+  margin-top: 10px;
+  text-align: center;
 }
 
-.outletName{
+.outletName {
   color: black;
   font-size: 2.5em;
 }
 
-.card-home{
+.card-home {
   background-color: #111;
   margin-top: 50px;
   /* width: 50%; */
 }
 
-.menu-card{
-  background-color: #e0e0e0;
-  /* width: 60%; */
-}
-
-.cart-card{
+.cart-card {
   background-color: #f7f7f7;
   /* width: 60%; */
 }
 
-
-.card-title{
+.card-title {
   font-size: 2rem;
   color: White;
 }
 body {
   font-family: "Lato", sans-serif;
-  transition: background-color .5s;
+  transition: background-color 0.5s;
+  padding-bottom: 50px;
 }
 
 .sidenav {
@@ -94,48 +181,89 @@ body {
 }
 
 #main {
-  transition: margin-left .5s;
+  transition: margin-left 0.5s;
   padding: 16px;
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
 }
 
-
-.menu-q input{
+.menu-q input {
   position: absolute;
   left: 70%;
 }
-.menu-q{
+.menu-q {
   margin-top: 10px;
   margin-bottom: 30px;
 }
-
-.del-bt{
+/* 
+.del-bt {
   margin-left: 10%;
-}
+} */
 
-.quan{
+/* .quan {
   margin-left: 3%;
   margin-right: 3%;
-}
+} */
 
-.num-in{
+/* .num-in {
   position: absolute;
   right: 50%;
-}
-.price{
+} */
+/* .price {
   position: absolute;
   right: 30%;
-}
-
-.qpm{
+} */
+/* 
+.qpm {
   display: inline-block;
   width: 68%;
   position: absolute;
   left: 35%;
   margin-left: 0;
   margin-right: 0;
+} */
+
+.description {
+  text-align: justify;
+  text-justify: inter-word;
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.landing-desc {
+  width: 70%;
+  margin: auto;
+  margin-top: 70px;
+}
+
+.landing-desc-login {
+  width: 50%;
+  margin: auto;
+  margin-top: 70px;
+}
+
+.landing-desc-menu {
+  width: 80%;
+  margin: auto;
+  margin-top: 70px;
+}
+
+.landing-desc-order {
+  width: 100%;
+  margin: auto;
+  margin-top: 70px;
+}
+
+.contact-desc {
+  width: 100%;
+  margin: auto;
+  margin-top: 20px;
 }

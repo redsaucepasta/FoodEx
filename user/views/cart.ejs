@@ -1,60 +1,62 @@
 <%- include("partials/header") -%>
 
 <!-- <div class="container"> -->
-<h2>Cart</h2>
-<br>
-<h4>Outlet: <%= outlet %></h4>
-<h5>Total: <%= carttotal %></h5>
-<div class="card cart-card">
-  <% cart.forEach(function(item){ %>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-        <div class="menu-q">
-          <span class="cart-item"><strong><%= item.name %></strong></span>
-          <div class="qpm">
-            <a href="/add/<%= item._id %>" class="btn btn-outline-warning">+</a>
-            <span class="quan">  <%= item.quantity %> </span>
-            <a href="/delete/<%= item._id %>" class="btn btn-outline-warning">-</a>
-            <button class="btn btn-outline-danger del-bt" data-toggle="modal" data-target="#exampleModal<%= item._id %>""><i class="fa fa-trash-o"></i></button>
-        </div>
 
 
-<!-- MODAL -->
-  <div class=" modal fade" id="exampleModal<%= item._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel"></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure You want to Delete <strong><%= item.name %></strong>?</p>
-                </div>
-                <div class="modal-footer">
-                  <a type="button" href="/deleteWhole/<%= item._id %>" class="btn btn-outline-danger">Delete</a>
-                </div>
-              </div>
+<div class=" centered landing-desc-menu landing-align-menu">
+  <div class="menu-card">
+    <h3><%= outlet %></h3>
+    <h5>Total: <%= carttotal %></h5>
+    <hr>
+    <% cart.forEach(function(item){ %>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="menu-q">
+              <span class="menu-start"><strong><%= item.name %></strong> - Rs. <%= item.price %></span>
+              <div class="menu-price-cart">
+                <a href="/add/<%= item._id %>" class="btn btn-outline-warning cart-bt">+</a>
+                <!-- <div class="menu-price">   </div> -->
+                <%= item.quantity %>
+                <a href="/delete/<%= item._id %>" class="btn btn-outline-warning cart-bt">-</a>
+                <button class="btn btn-outline-danger cart-bt" data-toggle="modal" data-target="#exampleModal<%= item._id %>"><i class="fa fa-trash-o"></i></button>
             </div>
+    
+    
+    <!-- MODAL -->
+      <div class=" modal fade" id="exampleModal<%= item._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel"></h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure You want to Delete <strong><%= item.name %></strong>?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a type="button" href="/deleteWhole/<%= item._id %>" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <script>
+              $('#myModal').on('shown.bs.modal', function() {
+                $('#myInput').trigger('focus')
+              })
+            </script>
+            <!-- MODAL END  -->
+    
+            <!-- <p><span class="">Price: <%= item.price %></span></p> -->
+          </div>
         </div>
-        <script>
-          $('#myModal').on('shown.bs.modal', function() {
-            $('#myInput').trigger('focus')
-          })
-        </script>
-        <!-- MODAL END  -->
-
-        <p><span class="cart-item-p">Price: <%= item.price %></span></p>
       </div>
     </div>
-  </div>
-</div>
-<% }); %>
-</div>
+    <% }); %>
 
-<br>
+    <br>
 <form action="/placeorder" method="post">
   <p>
     <label for="block">Payment Method</label>
@@ -89,11 +91,8 @@
     })
   </script>
 </form>
-<hr>
-<br><br>
-<!-- </div> -->
-
-
+  </div>
+</div>
 
 
 

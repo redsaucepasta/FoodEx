@@ -132,7 +132,7 @@ passport.deserializeUser(function(id, done) {
 // <----------------------------------------------------------->
 
 
-// lANDING PAGE
+// LANDING PAGE
 app.get("/", function(req, res){
   if(req.isAuthenticated())
   {

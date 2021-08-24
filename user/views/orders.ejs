@@ -1,7 +1,12 @@
 <%- include("partials/header") -%>
 
 
-<h2><br>Your orders will be displayed below.</h2>
+
+
+
+<div class=" centered landing-desc-order landing-align-order">
+  <div class="menu-card">
+    <h2><br>Your orders will be displayed below</h2>
 <hr>
 <br>
 <br>
@@ -11,26 +16,26 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseTwo">
-          <h3><strong> <%= firstOrder.outletName %> </strong><br></h3>
-          <h5>Order <%= firstOrder.status %></h5>
+        <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseTwo">
+          <h3 class="menu-start-status"><strong> <%= firstOrder.outletName %> </strong><br></h3>
+          <h5 class="menu-price-status"><%= firstOrder.status %>!</h5>
         </button>
       </h2>
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="card-body">
-        <p><strong>Outlet: </strong> <%= firstOrder.outletName %></p>
-        <p><strong>Total: </strong> <%= firstOrder.total %></p>
-        <p><strong>Payment Method: </strong> <%= firstOrder.payment %></p>
+      <div class="card-body text-left">
+        <p ><strong>Outlet: </strong> <%= firstOrder.outletName %></p>
+        <p ><strong>Total: </strong> <%= firstOrder.total %></p>
         <% (firstOrder.item).forEach(function(item){ %>
           <ul>
             <li><%= item.name %> (Rs.<%= item.price %>)</li>
             <p>Quantity: <%= item.quantity %></p>
           </ul>
-        <% }); %>
+          <% }); %>
+          <p ><strong>Payment Method: </strong> <%= firstOrder.payment %></p>
         <p><strong>Ordered on: </strong> <%= firstOrder.createdAt %></p>
-        <p><%= firstOrder.outletName %> contact number: <%= firstOrder.outletPhone %></p>
+        <p><i class="fa fa-phone"></i> <%= firstOrder.outletPhone %></p>
       </div>
     </div>
   </div>
@@ -45,31 +50,32 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h2 class="mb-0">
-        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse<%= order._id %>" aria-expanded="true" aria-controls="collapseOne">
-          <h3><strong> <%= order.outletName %> </strong><br></h3>
-          <h5>Order <%= order.status %></h5>
+        <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#collapse<%= order._id %>" aria-expanded="true" aria-controls="collapseOne">
+          <h3 class="menu-start-status"><strong> <%= order.outletName %> </strong><br></h3>
+          <h5 class="menu-price-status"><%= order.status %>!</h5>
         </button>
       </h2>
     </div>
 
     <div id="collapse<%= order._id %>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="card-body">
+      <div class="card-body text-left">
         <p><strong>Outlet: </strong> <%= order.outletName %></p>
         <p><strong>Total: </strong> <%= order.total %></p>
-        <p><strong>Payment Method: </strong> <%= order.payment %></p>
         <% (order.item).forEach(function(item){ %>
           <ul>
             <li><%= item.name %> (Rs.<%= item.price %>)</li>
             <p>Quantity: <%= item.quantity %></p>
           </ul>
-        <% }); %>
+          <% }); %>
+          <p><strong>Payment Method: </strong> <%= order.payment %></p>
         <p><strong>Ordered on: </strong> <%= order.createdAt %></p>
-        <p><%= order.outletName %> contact number: <%= order.outletPhone %></p>
+        <p><i class="fa fa-phone"></i> <%= order.outletPhone %></p>
       </div>
     </div>
   </div>
   <% }); %>
 </div>
-
+    </div>
+    </div>
 
 <%- include("partials/footer") -%>
