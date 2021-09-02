@@ -9,7 +9,7 @@
     <hr>
     <form action="/menu/<%= outletId %>" method="POST">
       <% (menu.item).forEach(function(item){%>
-      <div >
+      <div class="line-space">
         <strong class="menu-start"><%= item.name %></strong>  
         <select name="<%= item.name %>" class="menu-price">
           <option value="0">0</option>

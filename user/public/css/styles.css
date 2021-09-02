@@ -42,6 +42,10 @@
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
+.line-space {
+  margin-top: 30px;
+}
+
 .auth-card {
   width: 60%;
   margin: auto;
@@ -61,6 +65,8 @@
   /* background-color: #e0e0e0; */
   /* text-align: left; */
   margin-right: 10%;
+  /* margin-bottom: 10px; */
+  /* padding-bottom: 10px; */
   float: left;
 }
 
@@ -77,7 +83,8 @@
 .menu-price {
   /* text-align: right; */
   /* margin-right: 10%; */
-  margin-left: 0%;
+  margin-left: 20px;
+  /* margin-bottom: 10px; */
   float: right;
 }
 
@@ -238,6 +245,7 @@ body {
   margin-top: 20px;
 }
 
+
 .landing-desc {
   width: 70%;
   margin: auto;
@@ -266,4 +274,61 @@ body {
   width: 100%;
   margin: auto;
   margin-top: 20px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .landing-align {
+    width: 80%;
+    margin: auto;
+    margin-top: 70px;
+    padding: 30px 0 50px 0;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+  .landing-desc {
+    width: 90%;
+    margin: auto;
+    margin-top: 70px;
+  }
+  .landing-desc h1 {
+    font-size: 48px;
+  }
+
+  .landing-desc-menu {
+    width: 90%;
+    margin: auto;
+    margin-top: 70px;
+  }
+
+  .landing-align-menu {
+    width: 90%;
+    margin: auto;
+    margin-top: 70px;
+    padding: 30px 0 50px 0;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+
+  .menu-price {
+    /* text-align: right; */
+    /* margin-right: 10%; */
+    margin-left: 10px;
+    /* margin-bottom: 10px; */
+    float: right;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .menu-price-cart {
+    /* text-align: right; */
+    /* margin-right: 10%; */
+    margin-left: 10%;
+    float: left;
+  }
+
+  .menu-price-status {
+    /* text-align: right; */
+    /* margin-right: 10%; */
+    color: rgb(94, 240, 36);
+    margin-left: 0%;
+    float: left;
+  }
 }
